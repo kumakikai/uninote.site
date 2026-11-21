@@ -1,0 +1,459 @@
+/* Uni:Note & Pocket local site — DESIGN.md §4. Light only. */
+:root{
+  color-scheme: light;
+  --bg:#f5f0e6; --paper:#fffdf8; --ink:#1c1b19; --text:#45423c; --muted:#8a847a; --rule:#e4dccd; --margin:#e9b8a8;
+  --serif:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN",sans-serif;
+  --shadow:0 18px 40px -24px rgba(72,52,24,.45), 0 1px 0 rgba(72,52,24,.06);
+  --radius:16px; --max:1120px; --gutter:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:clip;scroll-padding-top:72px}
+body{overflow-x:clip;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased;min-width:320px}
+img,svg{max-width:100%;height:auto;display:block}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none}
+h1,h2,h3{color:var(--ink);font-family:var(--serif);font-weight:600;letter-spacing:.02em;line-height:1.45;word-break:auto-phrase;text-wrap:balance}
+h1{font-size:clamp(28px,4.2vw,46px)}
+h2{font-size:clamp(26px,2.6vw,30px)}
+h3{font-size:18px}
+p{max-width:38em}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.wrap.narrow{max-width:760px}
+.center{text-align:center}
+.center p{margin-left:auto;margin-right:auto}
+.eyebrow{font-size:16px;letter-spacing:.14em;color:var(--muted);font-weight:600}
+.note{font-size:16px;color:var(--muted);margin-top:10px}
+.section-h{margin-bottom:22px}
+/* 「〜を見る →」 under a card group: left-aligned with the group's left edge (DESIGN §3.34 (4)). */
+.after-link{margin-top:22px}
+.after-link .textlink{margin-top:0}
+.textlink{display:inline-flex;align-items:center;min-height:44px;color:var(--ink);font-weight:600;margin-top:4px;line-height:1.4}
+.textlink>span{margin-left:.2em}
+.textlink{box-shadow:inset 0 -1px 0 var(--ink)}
+.textlink:hover{opacity:.7}
+.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:99px;padding:10px 20px;min-height:44px;font-weight:600;font-size:16px;line-height:1.2;white-space:nowrap}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn-ink:hover{opacity:.85}
+.badge{display:inline-flex;min-height:44px;align-items:center}
+.badge img{width:136px;height:auto}
+.cta-row{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-top:26px}
+.cta-row.center{justify-content:center}
+.cta-row .textlink{margin-top:0}
+@media (min-width:900px){:root{--gutter:32px}}
+
+/* reveal */
+/* Only when main.js ran (it adds html.js); without JavaScript everything is visible from the start. */
+html.js .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+html.js .reveal.is-visible{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){html.js .reveal{opacity:1;transform:none;transition:none}}
+
+/* ---------- header (DESIGN §3.37 (1), §3.38 (4)) ---------- */
+.site-header{position:sticky;top:0;z-index:50;background:rgba(245,240,230,.94);backdrop-filter:saturate(1.3) blur(10px);-webkit-backdrop-filter:saturate(1.3) blur(10px);border-bottom:1px solid var(--rule);transition:transform .25s ease}
+.site-header .bar{display:flex;align-items:center;gap:20px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);font-size:17px;margin-right:auto;min-height:44px}
+.brand img{border-radius:8px;width:32px;height:32px}
+.nav-list{display:flex;align-items:center;gap:6px}
+.nav-link{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border-radius:99px;font:inherit;font-size:16px;color:var(--text);background:none;border:0;cursor:pointer}
+.nav-link:hover{color:var(--ink);background:rgba(28,27,25,.05)}
+.burger{display:none;width:44px;height:44px;border:0;background:none;cursor:pointer;flex-direction:column;justify-content:center;align-items:center;gap:5px;margin-right:-8px}
+.burger span{display:block;width:22px;height:2px;background:var(--ink);transition:transform .2s,opacity .2s}
+@media (max-width:899px){
+  .site-header .bar{height:55px;gap:8px}
+  .store-cta{padding:8px 14px;font-size:16px}
+  .burger{display:flex}
+  .nav{display:none;position:absolute;left:0;right:0;top:56px;background:var(--paper);border-bottom:1px solid var(--rule);max-height:calc(100vh - 56px);overflow-y:auto;box-shadow:var(--shadow)}
+  .site-header.nav-open .nav{display:block}
+  .nav-list{flex-direction:column;align-items:stretch;gap:0;padding:8px var(--gutter) 12px}
+  .nav-list>li{border-bottom:1px solid var(--rule)}
+  .nav-list>li:last-child{border-bottom:0}
+  .nav-link{width:100%;justify-content:space-between;padding:14px 4px;font-size:17px;border-radius:0}
+  .burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+  .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .site-header.is-hidden{transform:translateY(-100%)}
+}
+@media (max-width:359px){.store-cta{display:none}}
+/* Phone fixed bar (§3.37 (1)): ≤64px tall, above the home-indicator safe area; shown/hidden by main.js. */
+.fixed-bar{display:none}
+@media (max-width:640px){
+  .fixed-bar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:12px;height:60px;padding:0 var(--gutter) env(safe-area-inset-bottom);box-sizing:content-box;background:rgba(255,253,248,.96);border-top:1px solid var(--rule);box-shadow:0 -8px 24px -16px rgba(72,52,24,.4);transform:translateY(110%);transition:transform .25s ease}
+  .fixed-bar[hidden]{display:flex}
+  .fixed-bar.is-shown{transform:none}
+  .fixed-bar-text{font-weight:600;color:var(--ink);font-size:16px}
+  .fixed-bar .btn{padding:8px 16px}
+}
+
+/* ---------- device frames (CSS only; no product imagery) ---------- */
+.device{container-type:inline-size;width:100%;margin:0}
+.device .screen{background:var(--ink);overflow:hidden}
+.device .screen img{width:100%;height:auto;display:block}
+.device.ipad-p .screen,.device.ipad-l .screen{padding:3cqw;border-radius:4.2cqw}
+.device.ipad-p .screen img,.device.ipad-l .screen img,.device.ipad-p .screen.missing>.paper,.device.ipad-l .screen.missing>.paper{border-radius:1.2cqw}
+.device.iphone .screen{padding:3.27cqw;border-radius:12.15cqw}
+.device.iphone .screen img{border-radius:8.9cqw}
+.device .screen.missing{position:relative;display:block;padding:0}
+.device .screen.missing{background:var(--ink)}
+.device.ipad-p .screen.missing,.device.ipad-l .screen.missing{padding:3cqw}
+.device.iphone .screen.missing{padding:3.27cqw}
+.device .screen.missing::before{content:"";display:block;position:absolute;inset:3cqw;background:var(--paper);border-radius:1.2cqw}
+.device.iphone .screen.missing::before{inset:3.27cqw;border-radius:8.9cqw}
+.device .screen.missing>span{position:absolute;left:12%;right:12%;text-align:center;color:var(--muted);font-family:var(--sans);line-height:1.6}
+.device .screen.missing .missing-id{top:42%;font-size:clamp(11px,3cqw,14px);letter-spacing:.12em;font-weight:600}
+.device .screen.missing .missing-label{top:50%;font-size:clamp(10px,2.4cqw,12px)}
+.device.iphone .screen.missing .missing-id{font-size:clamp(10px,4cqw,13px)}
+.device.iphone .screen.missing .missing-label{font-size:clamp(9px,3cqw,11px)}
+.device .screen{box-shadow:var(--shadow)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;background:
+  repeating-linear-gradient(180deg,transparent 0,transparent 35px,var(--rule) 35px,var(--rule) 36px),
+  var(--paper);border-bottom:1px solid var(--rule);padding:28px 0 40px}
+@media (min-width:900px){.hero{padding:84px 0 72px}}
+/* 余白線 (DESIGN §4): one vertical line 48px outside the left edge of the content column (wrap left + gutter), PC only.
+   Below 1216px the column hugs the viewport, so the line is hidden instead of crossing the text. */
+.margin-line{display:none}
+@media (min-width:1216px){
+  .margin-line{display:block;position:absolute;top:0;bottom:0;left:calc(50% - var(--max)/2 + var(--gutter) - 48px);width:1px;background:var(--margin);pointer-events:none}
+}
+.hero .lead{font-size:17px;margin-top:14px}
+.hero-grid{display:grid;gap:24px;align-items:center}
+.hero-index .cta-row{margin-top:18px}
+@media (min-width:900px){.hero-grid{grid-template-columns:1fr 1.15fr;gap:40px}}
+/* §3.38 (2): on phones the iPad is 78% of the viewport width, the iPhone overlaps its bottom-right. */
+.hero-art{position:relative;padding-bottom:12%}
+.hero-ipad{width:78vw;max-width:100%}
+.hero-phone{position:absolute;right:0;bottom:0;width:30%}
+@media (min-width:900px){.hero-ipad{width:88%}}
+.hero-shot .hero-figure{width:100%;margin:40px auto 0;max-width:880px}
+.hero-shot .hero-figure.ipad-p{max-width:520px}
+.hero-shot .hero-figure.iphone{max-width:320px}
+.hero-text-only{padding:48px 0 40px}
+@media (min-width:900px){.hero-text-only{padding:96px 0 84px}}
+.hero-text-only h1{max-width:880px}
+
+/* ---------- proof strip ---------- */
+.proof{background:var(--ink);color:var(--paper)}
+.proof ul{display:flex;flex-wrap:wrap;gap:6px 32px;justify-content:center;padding:12px 0;font-size:16px;letter-spacing:.02em}
+.proof li{white-space:nowrap}
+
+/* ---------- story rows ---------- */
+.story{padding:56px 0 16px}
+@media (min-width:900px){.story{padding:88px 0 32px}}
+.story-row{display:grid;gap:26px;margin-bottom:56px;align-items:center}
+.story-row.text-only{grid-template-columns:1fr}
+@media (min-width:900px){
+  .story-row{grid-template-columns:1fr 1fr;gap:64px;margin-bottom:96px}
+  .story-row.flip .story-text{order:2}
+  .story-row.flip .story-figure{order:1}
+  .story-row.text-only{grid-template-columns:1fr;max-width:620px}
+}
+.story-text .num{display:inline-block;font-family:var(--serif);font-size:16px;letter-spacing:.2em;color:var(--paper);background:var(--ink);border-radius:99px;padding:2px 12px;margin-bottom:12px;margin-right:10px}
+.story-text .kicker{display:inline-block;font-size:16px;letter-spacing:.12em;color:var(--muted);margin-bottom:10px}
+.story-text h2{margin-bottom:12px}
+.story-figure{width:100%}
+.story-figure.ipad-p{max-width:420px;margin:0 auto}
+.story-figure.ipad-l{max-width:560px;margin:0 auto}
+.story-figure.iphone{max-width:260px;margin:0 auto}
+.story-figure .uc-figure{padding-left:0}
+.story-extras{display:flex;gap:12px;justify-content:center;margin-top:16px}
+.story-extra{flex:1 1 0;max-width:200px}
+.story-extra.ipad-l{max-width:260px}
+
+/* ---------- cards ---------- */
+.cards{padding:48px 0}
+@media (min-width:900px){.cards{padding:72px 0}}
+.card-grid{display:grid;gap:16px;grid-template-columns:1fr}
+@media (min-width:640px){.card-grid{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:900px){.card-grid{grid-template-columns:repeat(3,1fr);gap:20px}}
+.card{display:block;background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:22px 22px 20px;box-shadow:0 1px 0 rgba(72,52,24,.04)}
+a.card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.card h3{margin-bottom:6px}
+.card p{font-size:16px}
+.card .textlink{font-size:16px}
+.card-shot .card-thumb{width:100%;height:220px;margin:-4px 0 16px;display:flex;align-items:flex-end;justify-content:center}
+.card-shot .card-thumb .device{width:100%}
+.card-shot .card-thumb.ipad-p .device{max-width:150px}
+.card-shot .card-thumb.ipad-l .device{max-width:300px}
+.card-shot .card-thumb.iphone .device{max-width:98px}
+
+/* ---------- timeline ---------- */
+.timeline{padding:40px 0 24px}
+.timeline ol{position:relative;padding-left:0}
+.timeline li{position:relative;margin-bottom:28px}
+@media (min-width:900px){
+  .timeline ol{padding-left:140px}
+  .timeline ol::before{content:"";position:absolute;left:112px;top:8px;bottom:8px;border-left:1px solid var(--rule)}
+  .timeline li::before{content:"";position:absolute;left:-33px;top:26px;width:11px;height:11px;border-radius:50%;background:var(--ink)}
+  .timeline .time{position:absolute;left:-140px;top:20px;width:96px;text-align:right}
+}
+.timeline .time{display:block;font-family:var(--serif);color:var(--muted);font-size:14px;letter-spacing:.08em;margin-bottom:8px}
+.tl-card{display:grid;gap:18px;background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:22px}
+@media (min-width:640px){.tl-card{grid-template-columns:1fr 240px;align-items:center}}
+.tl-card:hover{box-shadow:var(--shadow)}
+.tl-figure{width:100%}
+.tl-figure.iphone{max-width:150px;margin:0 auto}
+.tl-figure.ipad-p{max-width:200px;margin:0 auto}
+.tl-figure.ipad-l{max-width:240px;margin:0 auto}
+
+/* ---------- pricing ---------- */
+.pricing-digest,.plans{padding:48px 0}
+@media (min-width:900px){.pricing-digest,.plans{padding:72px 0}}
+.plan-grid{display:grid;gap:16px}
+@media (min-width:800px){.plan-grid{grid-template-columns:repeat(3,1fr);gap:20px}}
+.plan{position:relative;background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:26px 24px}
+.plan.featured{border-color:var(--ink)}
+.plan h3{font-size:20px}
+.plan .price{font-family:var(--serif);font-size:34px;color:var(--ink);margin:8px 0 12px;line-height:1.2}
+.plan .price span{font-family:var(--sans);font-size:16px;color:var(--muted);margin-left:6px}
+.plan ul li{font-size:16px;padding:7px 0;border-top:1px solid var(--rule)}
+.plan p{font-size:16px}
+.plan-badge{position:absolute;top:-14px;left:22px;background:var(--ink);color:var(--paper);font-size:16px;line-height:1.5;letter-spacing:.08em;border-radius:99px;padding:2px 12px}
+
+/* ---------- tables ---------- */
+.table-block{padding:24px 0 32px}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--rule);border-radius:var(--radius);background:var(--paper)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:16px}
+th,td{padding:12px 14px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+thead th{font-weight:600;color:var(--ink);background:var(--bg)}
+tbody th{font-weight:500;color:var(--ink);width:34%}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+
+/* ---------- misc blocks ---------- */
+.notes{padding:8px 0 40px}
+.notes ul li{font-size:16px;color:var(--muted);padding-left:1.2em;position:relative}
+.notes ul li::before{content:"※";position:absolute;left:0}
+.links{padding:0 0 56px}
+.links .textlink{margin-right:28px}
+.links.ext .textlink{margin-right:0}
+.faq{padding:24px 0 48px}
+.qa{background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:22px 24px;margin-bottom:14px}
+.qa dt{font-family:var(--serif);color:var(--ink);font-size:18px;font-weight:600;margin-bottom:8px}
+.qa dt::before{content:"Q. ";color:var(--muted)}
+.qa dd{font-size:16px}
+.prose{padding:40px 0 16px}
+.prose-block{margin-bottom:44px}
+.prose-block h2{margin-bottom:12px}
+.prose-block p{margin-bottom:10px}
+.developer{padding:16px 0 64px}
+.dev-card{background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:28px}
+.dev-card h2{font-size:22px;margin:6px 0 10px}
+.story-cta{padding:56px 0 72px;text-align:center}
+.story-cta h2{margin-bottom:14px}
+.story-cta p{margin:0 auto 6px}
+
+/* ---------- final CTA & footer ---------- */
+.final-cta{background:var(--paper);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);text-align:center;padding:64px 0}
+.final-cta h2{margin-bottom:10px}
+.final-cta p{margin:0 auto 22px}
+.final-cta .badge{display:inline-block}
+.site-footer{padding:40px 0 32px;font-size:16px}
+@media (max-width:640px){.site-footer{padding-bottom:calc(32px + 64px + env(safe-area-inset-bottom))}}
+.fcols{display:grid;gap:28px;grid-template-columns:repeat(2,1fr)}
+@media (min-width:900px){.fcols{grid-template-columns:repeat(4,1fr)}}
+.fcol h3{font-family:var(--sans);font-size:16px;letter-spacing:.1em;color:var(--muted);margin-bottom:6px}
+.fcol li{padding:0}
+.fcol a{display:inline-flex;align-items:center;min-height:44px;padding:2px 0}
+.fcol a:hover{color:var(--ink)}
+.fbottom{margin-top:36px;padding-top:22px;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px}
+.copyright{color:var(--muted)}
+.fbottom .official{display:inline-flex;align-items:center;min-height:44px;color:var(--muted);box-shadow:inset 0 -1px 0 var(--rule)}
+.fbottom .official:hover{color:var(--ink)}
+
+/* ---------- 第2版: small cards, settings tables, summary, 活用例 ---------- */
+.section-sub{margin:-10px 0 22px;color:var(--muted)}
+.cards-small{padding-top:0}
+.card-grid.small{gap:12px}
+@media (min-width:640px){.card-grid.small{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:900px){.card-grid.small{grid-template-columns:repeat(6,1fr);gap:14px}}
+.card-grid.small .card{padding:16px 16px 14px}
+.card-grid.small .card h3{font-size:16px}
+.card-grid.small .card p{font-size:16px}
+.card-grid.small .card .textlink{font-size:16px}
+.story .section-h{margin-bottom:40px}
+.table-block .section-h{margin-top:16px}
+.table-figures{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:28px}
+.table-figure{width:100%}
+.table-figure.ipad-p{max-width:240px}
+@media (min-width:640px){.table-figure.ipad-p{flex:1 1 200px;max-width:280px}}
+.settings-summary{padding:24px 0 56px}
+.summary-grid{display:grid;gap:28px}
+@media (min-width:900px){.summary-grid{grid-template-columns:1fr 1fr;gap:56px;align-items:start}}
+.summary-list{list-style:none;margin:0;padding:0}
+.summary-list li{padding:16px 0;border-bottom:1px solid var(--rule)}
+.summary-list li:first-child{padding-top:0}
+.summary-list h3{margin-bottom:4px;font-size:17px}
+.summary-list p{font-size:14.5px}
+.summary-shots{display:grid;gap:16px;grid-template-columns:1fr 1fr}
+.summary-figure{width:100%}
+.hero-text-only .lead{max-width:720px}
+
+/* ---------- 活用例 (DESIGN §3.14 / §3.34): persona, vertical timeline with 拡大パネル, hub cards ---------- */
+.card .kicker{display:block;font-size:16px;letter-spacing:.12em;color:var(--muted);margin-bottom:6px}
+.card-grid.small .card h3{font-size:16px;line-height:1.6}
+.persona{padding:28px 0 0}
+.persona p{max-width:none;font-size:16px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.persona .eyebrow{white-space:nowrap}
+.uc-timeline{padding:40px 0 24px}
+@media (min-width:900px){.uc-timeline{padding:64px 0 40px}}
+.uc-timeline ol{position:relative;padding-left:22px}
+.uc-timeline ol::before{content:"";position:absolute;left:5px;top:10px;bottom:10px;border-left:1px solid var(--rule)}
+.uc-step{position:relative;margin-bottom:36px}
+.uc-step::before{content:"";position:absolute;left:-22px;top:9px;width:11px;height:11px;border-radius:50%;background:var(--ink)}
+/* Time label: line 1 = 時刻・時点, line 2 = 場面; neither line wraps. */
+.uc-time{display:flex;flex-wrap:wrap;gap:0 10px;align-items:baseline;font-family:var(--serif);color:var(--muted);font-size:16px;letter-spacing:.08em;margin-bottom:8px;line-height:1.6}
+.uc-time>span{white-space:nowrap}
+.uc-scene{color:var(--text)}
+.uc-body{display:grid;gap:18px;background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:22px}
+.uc-text h2{margin-bottom:10px}
+.uc-text .textlink{font-size:16px}
+.uc-figure{width:100%;display:flex;justify-content:center}
+.uc-shot{position:relative;width:100%}
+.uc-figure.ipad-p .uc-shot{max-width:420px}
+.uc-figure.ipad-l .uc-shot{max-width:600px}
+.uc-figure.iphone .uc-shot{max-width:240px}
+/* 拡大パネル (§3.38 (3)). Phones: the panel comes first at full width, then the device image at 70% (centered). PC: overlap. */
+.uc-shot{display:flex;flex-direction:column;align-items:center}
+.uc-shot>.device{width:70%}
+.uc-zoom{order:-1;margin:0 0 14px;width:100%;background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:6px;box-shadow:0 10px 24px -18px rgba(72,52,24,.45)}
+.uc-zoom img{width:100%;height:auto;border-radius:7px}
+.uc-after{margin-top:8px;font-size:16px}
+@media (min-width:900px){
+  .uc-shot{display:block}
+  .uc-shot>.device{width:100%}
+  .uc-zoom{order:0}
+  .uc-timeline ol{padding-left:170px}
+  .uc-timeline ol::before{left:140px}
+  .uc-step{margin-bottom:48px}
+  .uc-step::before{left:-35px;top:14px}
+  .uc-time{position:absolute;left:-170px;top:8px;width:124px;margin:0;display:block;text-align:right}
+  .uc-time>span{display:block}
+  .uc-body{grid-template-columns:2fr 3fr;align-items:start;gap:36px;padding:28px}
+  .uc-text{padding-top:6px}
+  .uc-figure{padding-left:36px}
+  /* PC: the panel overlaps the device's bottom-left corner (≥40px to the left, 42% of its height below the device).
+     A panel wider than the device slides further left so its right edge stays 24px inside the device's right edge. */
+  .uc-shot{padding-bottom:calc(var(--zh,0px) * .6 + 12px)}
+  .uc-zoom{position:absolute;bottom:0;margin:0;width:var(--zw);max-width:none;left:min(-32px,calc(100% - var(--zw) + 24px))}
+  .uc-figure.iphone .uc-zoom{left:min(-72px,calc(100% - var(--zw) + 24px))}
+  .story-figure .uc-zoom,.pillar-figures .uc-zoom{left:min(0px,calc(100% - var(--zw)))}
+}
+.uses-grid{grid-template-columns:1fr}
+@media (min-width:640px){.card-grid.uses-grid{grid-template-columns:repeat(2,1fr);gap:24px}}
+.card-use .card-thumb{width:100%;height:auto;margin:-4px 0 18px;display:flex;align-items:flex-end;justify-content:center}
+.card-use .card-thumb.ipad-p .device{max-width:220px}
+.card-use .card-thumb.ipad-l .device{max-width:360px}
+.card-use h3{font-size:20px;line-height:1.5}
+.card-use p{font-size:16px;color:var(--muted)}
+
+/* ---------- 改訂3: pillars, customize cards, entrances, 次に見る, free intro, uses groups (DESIGN §3.35–§3.38) ---------- */
+.section-sub{font-size:16px}
+.pillars{padding:48px 0 24px}
+@media (min-width:900px){.pillars{padding:80px 0 40px}}
+.pillars .section-h.center{margin-bottom:6px}
+.pillars .section-sub.center{margin:0 auto 32px;text-align:center}
+.pillar{margin-bottom:56px}
+.pillar-text{text-align:center;margin:0 auto 20px;max-width:620px}
+.pillar-text .kicker{display:block;font-size:16px;letter-spacing:.14em;color:var(--muted);margin-bottom:8px}
+.pillar-text h2{margin-bottom:8px}
+.pillar-text p{margin:0 auto}
+.pillar-text .textlink{margin-top:6px}
+.pillar-figures{display:flex;flex-direction:column;align-items:center;gap:18px}
+.pillar-figures .uc-figure{padding-left:0}
+.pillar-figures .uc-figure.ipad-l .uc-shot{max-width:700px}
+.pillar-figures .uc-figure.ipad-p .uc-shot{max-width:440px}
+.pillar-figures .uc-figure.iphone .uc-shot{max-width:300px}
+.pillar-sub{width:100%}
+.pillar-sub.ipad-p{max-width:300px}
+.pillar-sub.ipad-l{max-width:520px}
+.pillar-sub.iphone{max-width:200px}
+@media (max-width:640px){.pillar-sub{display:none}}
+@media (min-width:900px){
+  .pillar{margin-bottom:96px}
+  .pillar-figures{flex-direction:row;align-items:flex-end;justify-content:center;gap:32px}
+  .pillar-figures .uc-figure{width:100%;flex:0 1 auto}
+  .pillar-figures .uc-figure.ipad-l{flex-basis:700px}
+  .pillar-figures .uc-figure.ipad-p{flex-basis:440px}
+  .pillar-figures .uc-figure.iphone{flex-basis:300px}
+  .pillar-sub{flex:0 0 280px;max-width:280px}
+  .pillar-sub.ipad-l{flex-basis:400px;max-width:400px}
+}
+.customize-cards{padding-top:40px}
+.custom-grid{grid-template-columns:1fr}
+@media (min-width:640px){.card-grid.custom-grid{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:900px){.card-grid.custom-grid{grid-template-columns:repeat(3,1fr)}}
+.card-custom{display:flex;flex-direction:column}
+.card-custom .card-thumb{width:100%;height:150px;margin:-4px 0 14px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.card-custom .card-thumb .device{width:100%}
+.card-custom .card-thumb.ipad-p .device{max-width:120px}
+.card-custom .card-thumb.ipad-l .device{max-width:220px}
+.card-custom .card-thumb.iphone .device{max-width:80px}
+.entrances{display:grid;gap:16px;margin-top:32px}
+@media (min-width:640px){.entrances{grid-template-columns:1fr 1fr;gap:20px}}
+.entrance{padding:26px 24px}
+.entrance h3{font-size:22px;margin-bottom:4px}
+.entrance-links{margin-top:6px}
+.entrance-links li{padding:0}
+.next-section{padding:40px 0 48px;background:var(--bg)}
+.next-grid{display:grid;gap:16px}
+@media (min-width:640px){.next-grid{grid-template-columns:1fr 1fr;gap:20px}}
+.next-card{padding:26px 24px}
+.next-card h3{font-size:22px}
+.free-intro{padding:8px 0 0}
+.free-intro .lead-p{font-size:17px;margin-bottom:14px}
+.free-intro .points{display:grid;gap:12px;margin:24px 0 8px}
+@media (min-width:640px){.free-intro .points{grid-template-columns:repeat(3,1fr)}}
+.free-intro .points li{background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:18px 18px 16px}
+.free-intro .points h3{font-size:17px;margin-bottom:4px}
+.free-intro .plans-h{margin:36px 0 -24px}
+.use-group{margin-bottom:28px}
+.use-group-h{font-size:22px;margin-bottom:2px}
+.use-group-p{color:var(--muted);margin-bottom:14px}
+.uses-cards .after-link{margin-top:4px}
+/* §3.38 (4): phone headings 26–32px, tap-friendly card links; (2) hero first screen */
+@media (max-width:640px){
+  h2{font-size:26px}
+  .uc-text h2,.pillar-text h2,.story-text h2,.dev-card h2,.final-cta h2,.story-cta h2{font-size:26px}
+  .card h3{min-height:0}
+  .hero-index .hero-text{padding-top:4px}
+  .hero-index h1{font-size:28px}
+  .hero-index .lead{font-size:16px;margin-top:10px}
+  .hero-index .cta-row{gap:10px 18px;margin-top:14px}
+  .hero-index .hero-grid{gap:18px}
+  .hero-index{padding:20px 0 28px}
+}
+
+/* ---------- スマホ仕上げ (2026-11-01): 横スクロールのカード・設定カードの拡大パネル・フッターの折りたたみ (〜640px only; PC unchanged) ---------- */
+.card-zoom{display:none}
+.fcol summary{list-style:none}
+.fcol summary::-webkit-details-marker{display:none}
+@media (min-width:641px){.fcol summary{pointer-events:none}}
+@media (max-width:640px){
+  /* 1・2: one horizontal row; CSS scroll-snap, each card 82% of the viewport so the next card's edge shows. Bleeds to the viewport
+     edges (negative gutter margin) but the first card starts at the gutter (scroll-padding), aligned with the text above/below. */
+  .hscroll{display:flex;align-items:flex-start;gap:12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;margin:0 calc(var(--gutter) * -1);padding:16px var(--gutter) 10px;scroll-padding:0 var(--gutter);scrollbar-width:none}
+  .hscroll::-webkit-scrollbar{display:none}
+  .hscroll>*{flex:0 0 82vw;max-width:82vw;scroll-snap-align:start;scroll-snap-stop:always}
+  .hscroll::after{content:"";flex:0 0 1px;margin-left:calc(var(--gutter) - 12px - 1px)}
+  .plan-grid.hscroll{margin-top:-16px}
+  .custom-grid.hscroll{padding-top:4px;margin-top:-4px}
+  .plan-grid.hscroll .plan{display:flex;flex-direction:column}
+  /* 1: the card image is the setting's crop at the full card width; the device thumbnail is for PC. */
+  .card-custom{padding:0;overflow:hidden}
+  .card-custom .card-thumb{display:none}
+  .card-custom .card-zoom{display:block;margin:0;border-bottom:1px solid var(--rule);background:var(--paper)}
+  .card-custom .card-zoom img{width:100%;height:auto;display:block}
+  .card-custom .card-body{padding:14px 18px 18px}
+  .card-custom .card-body h3{margin-bottom:4px}
+  a.card:hover{transform:none}
+  /* 3: footer columns as <details>; closed at first, heading tap area ≥44px. */
+  .fcols{grid-template-columns:1fr;gap:0;border-top:1px solid var(--rule)}
+  .fcol{border-bottom:1px solid var(--rule)}
+  .fcol summary{display:flex;align-items:center;justify-content:space-between;min-height:52px;padding:4px 2px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .fcol summary h3{margin:0;color:var(--ink)}
+  .fcol summary::after{content:"";width:9px;height:9px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:rotate(45deg) translate(-2px,-2px);margin-right:6px;transition:transform .2s ease}
+  .fcol details[open] summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+  .fcol ul{display:none;padding:0 2px 10px}
+  .fcol details[open]+ul{display:block}
+  .fbottom{margin-top:24px;border-top:0;padding-top:0}
+}
